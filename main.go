@@ -13,7 +13,6 @@ import (
 
 	criblcontrolplanesdkgo "github.com/criblio/cribl-control-plane-sdk-go"
 	"github.com/criblio/cribl-control-plane-sdk-go/models/components"
-	"github.com/criblio/cribl-control-plane-sdk-go/models/operations"
 )
 
 // Config holds the SDK client and server configuration
@@ -156,7 +155,9 @@ func main() {
 	fmt.Println("Fetching function: aggregate_metrics")
 	fmt.Println()
 
-	functionResponse, err := config.Client.Functions.Get(ctx, "aggregate_metrics", operations.WithServerURL(config.ServerURL))
+	// Note: Don't use WithServerURL here as it may interfere with URL construction
+	// The SDK client was already initialized with the correct serverURL (baseURL + "/api/v1")
+	functionResponse, err := config.Client.Functions.Get(ctx, "aggregate_metrics")
 	if err != nil {
 		log.Fatalf("❌ Failed to get function: %v", err)
 	}
